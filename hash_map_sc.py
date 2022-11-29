@@ -112,21 +112,16 @@ class HashMap:
             node = next_node
             next_node = next_node.next
         new_node = SLNode(key, value)
+        # if new_node.key == next_node.key:
         node.next = new_node
         if next_node:
             new_node.next = next_node
+            if new_node.key == next_node.key:
+                new_node.next = next_node.next
+
+
         else:
             new_node.next = None
-        # new_node = SLNode
-
-        # node.next = new_node
-        # new_node.next = node.next.next
-
-
-        #         new_node = SLNode(key, value)
-        #         new_node.next = node.next
-        #         node.next = new_node
-        #         return
 
 
     def empty_buckets(self) -> int:
@@ -241,11 +236,13 @@ if __name__ == "__main__":
     print(m)
     m.put(14, "fourteen")
     print(m)
-    m.put(49, 49)
+    m.put(49, "fortynine")
     print(m)
     m.put(28, 28)
     print(m)
     m.put(14, 14)
+    print(m)
+    m.put(49, 49)
     print(m)
 
     # print("\nPDF - put example 4")
