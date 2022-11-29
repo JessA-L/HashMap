@@ -96,6 +96,9 @@ class HashMap:
         not in the hash map, a new key/value pair must be added.
         """
 
+        if self.table_load() >= 1:
+            self.resize_table(self._capacity * 2)
+
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
         bucket_ll = self._buckets[bucket]
@@ -170,11 +173,42 @@ class HashMap:
         must remain in the new hash map, and all hash table links must be rehashed.
         """
         # First check that new_capacity is not less than 1; if so, the method does nothing.
-
+        if new_capacity < 1:
+            return
         # If new_capacity is 1 or more, make sure it is a prime number. If not, change it to the next
-        # highest prime number. You may use the methods _is_prime() and _next_prime() from the
-        # skeleton code.
-        pass
+        # highest prime number.
+        # print(new_capacity)
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+        # print(new_capacity)
+
+        add_num_of_buckets = new_capacity - self._capacity
+
+        # print(type(self._buckets))
+        for buckets in range(add_num_of_buckets):
+            self._buckets.append(LinkedList())
+
+        self._capacity = new_capacity
+
+    # def _resize_da(self, new_capacity: int) -> None:
+    #     """
+    #     Method that changes the capacity of the underlying storage
+    #     for the elements in the dynamic array. It does not change the values
+    #     or the order of any elements currently stored in the array.
+    #     """
+    #     # Check for positive integers or whether new_capacity <= _size:
+    #     if new_capacity <= 0 or new_capacity < self._size:
+    #         return
+    #
+    #     _new_data = StaticArray(new_capacity)
+    #
+    #     # copy data from _data to _new_data
+    #     for index in range(0, self._size):
+    #         _new_data[index] = self._data[index]
+    #
+    #     # _new_data replaces original _data array
+    #     self._data = _new_data
+    #     self._capacity = new_capacity
 
     def get(self, key: str):
         """
@@ -230,14 +264,14 @@ if __name__ == "__main__":
         if i % 25 == 24:
             print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    # print("\nPDF - put example 2")
-    # print("-------------------")
-    # m = HashMap(41, hash_function_2)
-    # for i in range(50):
-    #     m.put('str' + str(i // 3), i * 100)
-    #     if i % 10 == 9:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    #
+    print("\nPDF - put example 2")
+    print("-------------------")
+    m = HashMap(41, hash_function_2)
+    for i in range(50):
+        m.put('str' + str(i // 3), i * 100)
+        if i % 10 == 9:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
     # print("\nPDF - put example 3")
     # print("-------------------")
     # hash_function_3 = lambda a : a % 7
@@ -308,25 +342,25 @@ if __name__ == "__main__":
     # m = HashMap(53, hash_function_1)
     # print(m.empty_buckets())
     #
-    # print("\nPDF - table_load example 1")
-    # print("--------------------------")
-    # m = HashMap(101, hash_function_1)
-    # print(round(m.table_load(), 2))
-    # m.put('key1', 10)
-    # print(round(m.table_load(), 2))
-    # m.put('key2', 20)
-    # print(round(m.table_load(), 2))
-    # m.put('key1', 30)
-    # print(round(m.table_load(), 2))
-    #
-    # print("\nPDF - table_load example 2")
-    # print("--------------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(50):
-    #     m.put('key' + str(i), i * 100)
-    #     if i % 10 == 0:
-    #         print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    #
+    print("\nPDF - table_load example 1")
+    print("--------------------------")
+    m = HashMap(101, hash_function_1)
+    print(round(m.table_load(), 2))
+    m.put('key1', 10)
+    print(round(m.table_load(), 2))
+    m.put('key2', 20)
+    print(round(m.table_load(), 2))
+    m.put('key1', 30)
+    print(round(m.table_load(), 2))
+
+    print("\nPDF - table_load example 2")
+    print("--------------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(50):
+        m.put('key' + str(i), i * 100)
+        if i % 10 == 0:
+            print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
     # print("\nPDF - clear example 1")
     # print("---------------------")
     # m = HashMap(101, hash_function_1)
@@ -351,36 +385,36 @@ if __name__ == "__main__":
     # m.clear()
     # print(m.get_size(), m.get_capacity())
     #
-    # print("\nPDF - resize example 1")
-    # print("----------------------")
-    # m = HashMap(23, hash_function_1)
-    # m.put('key1', 10)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    # m.resize_table(30)
-    # print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    #
-    # print("\nPDF - resize example 2")
-    # print("----------------------")
-    # m = HashMap(79, hash_function_2)
-    # keys = [i for i in range(1, 1000, 13)]
-    # for key in keys:
-    #     m.put(str(key), key * 42)
-    # print(m.get_size(), m.get_capacity())
-    #
-    # for capacity in range(111, 1000, 117):
-    #     m.resize_table(capacity)
-    #
-    #     m.put('some key', 'some value')
-    #     result = m.contains_key('some key')
-    #     m.remove('some key')
-    #
-    #     for key in keys:
-    #         # all inserted keys must be present
-    #         result &= m.contains_key(str(key))
-    #         # NOT inserted keys must be absent
-    #         result &= not m.contains_key(str(key + 1))
-    #     print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
-    #
+    print("\nPDF - resize example 1")
+    print("----------------------")
+    m = HashMap(23, hash_function_1)
+    m.put('key1', 10)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+    m.resize_table(30)
+    print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
+
+    print("\nPDF - resize example 2")
+    print("----------------------")
+    m = HashMap(79, hash_function_2)
+    keys = [i for i in range(1, 1000, 13)]
+    for key in keys:
+        m.put(str(key), key * 42)
+    print(m.get_size(), m.get_capacity())
+
+    for capacity in range(111, 1000, 117):
+        m.resize_table(capacity)
+
+        m.put('some key', 'some value')
+        result = m.contains_key('some key')
+        m.remove('some key')
+
+        # for key in keys:
+        #     # all inserted keys must be present
+        #     result &= m.contains_key(str(key))
+        #     # NOT inserted keys must be absent
+        #     result &= not m.contains_key(str(key + 1))
+        # print(capacity, result, m.get_size(), m.get_capacity(), round(m.table_load(), 2))
+
     # print("\nPDF - get example 1")
     # print("-------------------")
     # m = HashMap(31, hash_function_1)
