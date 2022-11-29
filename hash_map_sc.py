@@ -110,42 +110,32 @@ class HashMap:
         node = bucket_ll._head
         next_node = node.next
 
+        # find correct spot to insert
         while next_node and key > next_node.key:
             node = next_node
             next_node = next_node.next
 
+        # handle duplicate keys
         if key == node.key:
             node.value = value
             return
 
         new_node = SLNode(key, value)
 
+        # insert new_node:
         node.next = new_node
+        # if new_node is not the tail:
         if next_node:
             new_node.next = next_node
+            # handle duplicate keys
             if new_node.key == next_node.key:
                 new_node.next = next_node.next
                 return
+        # if new_node is tail
         else:
             new_node.next = None
 
         self._size += 1
-        # # put node in bucket in sorted order
-        # next_node = bucket_ll._head
-        # node = next_node
-        #
-        # while next_node and key > next_node.key:
-        #     node = next_node
-        #     next_node = next_node.next
-        # new_node = SLNode(key, value)
-        # node.next = new_node
-        # if next_node:
-        #     new_node.next = next_node
-        #     if new_node.key == next_node.key:
-        #         new_node.next = next_node.next
-        # else:
-        #     new_node.next = None
-
 
     def empty_buckets(self) -> int:
         """
@@ -277,8 +267,6 @@ if __name__ == "__main__":
     # m.put("Jen", "Wife")
     # m.put("Gregg", "Dog")
     # m.put("Gregl", "Same bucket")
-    # # print(m)
-    #
     # m.put("Jei", "Same bucket")
     # # print(m)
     # m.put("Gregg", "Dumb")
