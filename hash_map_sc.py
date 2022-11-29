@@ -120,7 +120,7 @@ class HashMap:
         else:
             new_node.next = None
 
-
+        self._size += 1
         # # put node in bucket in sorted order
         # next_node = bucket_ll._head
         # node = next_node
