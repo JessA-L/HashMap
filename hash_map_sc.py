@@ -164,7 +164,7 @@ class HashMap:
         TODO: Write this implementation
         This method returns the current hash table load factor.
         """
-        pass
+        return self._size / self._capacity
 
     def clear(self) -> None:
         """
