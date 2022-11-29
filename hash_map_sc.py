@@ -105,23 +105,37 @@ class HashMap:
             return
 
         # put node in bucket in sorted order
-        next_node = bucket_ll._head
-        node = next_node
+        node = bucket_ll._head
+        next_node = node.next
 
         while next_node and key > next_node.key:
             node = next_node
             next_node = next_node.next
         new_node = SLNode(key, value)
-        # if new_node.key == next_node.key:
         node.next = new_node
         if next_node:
             new_node.next = next_node
             if new_node.key == next_node.key:
                 new_node.next = next_node.next
-
-
         else:
             new_node.next = None
+
+
+        # # put node in bucket in sorted order
+        # next_node = bucket_ll._head
+        # node = next_node
+        #
+        # while next_node and key > next_node.key:
+        #     node = next_node
+        #     next_node = next_node.next
+        # new_node = SLNode(key, value)
+        # node.next = new_node
+        # if next_node:
+        #     new_node.next = next_node
+        #     if new_node.key == next_node.key:
+        #         new_node.next = next_node.next
+        # else:
+        #     new_node.next = None
 
 
     def empty_buckets(self) -> int:
@@ -129,7 +143,12 @@ class HashMap:
         TODO: Write this implementation
         This method returns the number of empty buckets in the hash table.
         """
-        pass
+        empty_buckets_count = 0
+        for bucket in range(0, self._buckets.length()):
+            if not self._buckets[bucket]._head:
+                empty_buckets_count += 1
+
+        return empty_buckets_count
 
     def table_load(self) -> float:
         """
@@ -204,14 +223,15 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 # ------------------- BASIC TESTING ---------------------------------------- #
 
 if __name__ == "__main__":
-
+    #
     # print("\nPDF - put example 1")
     # print("-------------------")
     # m = HashMap(53, hash_function_1)
     # for i in range(150):
     #     m.put('str' + str(i), i * 100)
-    #     if i % 25 == 24:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+    #     print(m)
+        # if i % 25 == 24:
+        #     print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
     # print("\nPDF - put example 2")
     # print("-------------------")
@@ -225,11 +245,8 @@ if __name__ == "__main__":
     print("-------------------")
     hash_function_3 = lambda a : a % 7
     m = HashMap(7, hash_function_3)
-    # print(m)
     m.put(0, 0)
     print(m)
-    # m.put(10, 10)
-    # m.put(20, 20)
     m.put(7, 7)
     print(m)
     m.put(21, 21)
@@ -245,17 +262,18 @@ if __name__ == "__main__":
     m.put(49, 49)
     print(m)
 
-    # print("\nPDF - put example 4")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # # print(m)
-    # m.put("Jen", "Wife")
-    # m.put("Gregg", "Dog")
-    # m.put("Gregl", "Same bucket")
-    # m.put("Jei", "Same bucket")
+    print("\nPDF - put example 4")
+    print("-------------------")
+    m = HashMap(53, hash_function_1)
+    m.put("Jen", "Wife")
+    m.put("Gregg", "Dog")
+    m.put("Gregl", "Same bucket")
     # print(m)
-    # m.put("Gregg", "Dumb")
+
+    m.put("Jei", "Same bucket")
     # print(m)
+    m.put("Gregg", "Dumb")
+    print(m)
 
     # print("\nPDF - put example 5")
     # print("-------------------")
@@ -287,6 +305,11 @@ if __name__ == "__main__":
     #     m.put('key' + str(i), i * 100)
     #     if i % 30 == 0:
     #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 3")
+    print("-----------------------------")
+    m = HashMap(53, hash_function_1)
+    print(m.empty_buckets())
     #
     # print("\nPDF - table_load example 1")
     # print("--------------------------")
