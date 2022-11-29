@@ -195,23 +195,26 @@ class HashMap:
         This method returns the value associated with the given key. If the key is not in the hash
         map, the method returns None.
         """
-        for bucket in range(0, self._buckets.length()):
-            if self._buckets[bucket].contains(key):
-                node = self._buckets[bucket]._head
-                while node:
-                    if node.key == key:
-                        return node.value
-                    node = node.next
-                return node
+        # Use hash function to determine "bucket"
+        bucket = self._hash_function(key) % self._capacity
+
+        node = self._buckets[bucket].contains(key)
+
+        if node:
+            return node.value
+
+        return None
 
     def contains_key(self, key: str) -> bool:
         """
         This method returns True if the given key is in the hash map, otherwise it returns False. An
         empty hash map does not contain any keys.
         """
-        for bucket in range(0, self._buckets.length()):
-            if self._buckets[bucket].contains(key):
-                return True
+        # Use hash function to determine "bucket"
+        bucket = self._hash_function(key) % self._capacity
+
+        if self._buckets[bucket].contains(key):
+            return True
 
         return False
 
@@ -221,13 +224,10 @@ class HashMap:
         This method removes the given key and its associated value from the hash map. If the key
         is not in the hash map, the method does nothing (no exception needs to be raised).
         """
-        for bucket in range(0, self._buckets.length()):
-            if self._buckets[bucket].contains(key):
-                node = self._buckets[bucket]._head
-                while node:
-                    if node.key == key:
-                        self._buckets[bucket].remove(node)
-                    node = node.next
+        # Use hash function to determine "bucket"
+        bucket = self._hash_function(key) % self._capacity
+
+        self._buckets[bucket].remove(key)
 
     def get_keys_and_values(self) -> DynamicArray:
         """
