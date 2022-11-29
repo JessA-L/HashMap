@@ -95,6 +95,9 @@ class HashMap:
         the hash map, its associated value must be replaced with the new value. If the given key is
         not in the hash map, a new key/value pair must be added.
         """
+
+        self._size += 1
+
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
         bucket_ll = self._buckets[bucket]
@@ -120,7 +123,7 @@ class HashMap:
         else:
             new_node.next = None
 
-        self._size += 1
+
         # # put node in bucket in sorted order
         # next_node = bucket_ll._head
         # node = next_node
