@@ -114,7 +114,13 @@ class HashMap:
         while next_node and key > next_node.key:
             node = next_node
             next_node = next_node.next
+
+        if key == node.key:
+            node.value = value
+            return
+
         new_node = SLNode(key, value)
+
         node.next = new_node
         if next_node:
             new_node.next = next_node
@@ -248,7 +254,7 @@ if __name__ == "__main__":
     print("-------------------")
     hash_function_3 = lambda a : a % 7
     m = HashMap(7, hash_function_3)
-    m.put(0, 0)
+    m.put(0, "zero")
     print(m)
     m.put(7, 7)
     print(m)
@@ -264,19 +270,21 @@ if __name__ == "__main__":
     print(m)
     m.put(49, 49)
     print(m)
-
-    print("\nPDF - put example 4")
-    print("-------------------")
-    m = HashMap(53, hash_function_1)
-    m.put("Jen", "Wife")
-    m.put("Gregg", "Dog")
-    m.put("Gregl", "Same bucket")
-    # print(m)
-
-    m.put("Jei", "Same bucket")
-    # print(m)
-    m.put("Gregg", "Dumb")
+    m.put(0, 0)
     print(m)
+
+    # print("\nPDF - put example 4")
+    # print("-------------------")
+    # m = HashMap(53, hash_function_1)
+    # m.put("Jen", "Wife")
+    # m.put("Gregg", "Dog")
+    # m.put("Gregl", "Same bucket")
+    # # print(m)
+    #
+    # m.put("Jei", "Same bucket")
+    # # print(m)
+    # m.put("Gregg", "Dumb")
+    # print(m)
 
     # print("\nPDF - put example 5")
     # print("-------------------")
