@@ -96,85 +96,36 @@ class HashMap:
         not in the hash map, a new key/value pair must be added.
         """
 
-        if self.table_load() >= 1:
+        table_load = self.table_load()
+        if table_load >= 1:
             self.resize_table(self._capacity * 2)
 
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
-        bucket_ll = self._buckets[bucket]
 
-        # insert node if bucket is empty
-        if bucket_ll._head is None or key < bucket_ll._head.key:
-            bucket_ll.insert(key, value)
-            self._size += 1
-            return
+        node = self._buckets[bucket]._head
 
-        # put node in bucket in sorted order
-        node = bucket_ll._head
-        previous_node = node
-
-        while node.next:
-
+        while node:
             if key == node.key:
                 node.value = value
                 return
-            if key < node.next.key:
-                new_node = SLNode(key, value)
-                # new_node.next = node.next
-                node.next = new_node
-
-                # previous_node.next = new_node
-                new_node.next = node.next.next
-                self._size += 1
-                return
-
-            previous_node = node
             node = node.next
 
-            #
-            # node = next_node
-            # next_node = next_node.next
-
-        if key == node.key:
-            node.value = value
-            return
-
-        new_node = SLNode(key, value)
-        new_node.next = None
-        node.next = new_node
+        self._buckets[bucket].insert(key, value)
         self._size += 1
 
+    def _add_to_bucket(self, bucket_ll, key: str, value: object):
+        node = bucket_ll._head
 
-        # # put node in bucket in sorted order
-        # node = bucket_ll._head
-        # next_node = node.next
-        #
-        # # find correct spot to insert
-        # while next_node and key > next_node.key:
-        #     node = next_node
-        #     next_node = next_node.next
-        #
-        # # handle duplicate keys
-        # if key == node.key:
-        #     node.value = value
-        #     return
-        #
-        # new_node = SLNode(key, value)
-        #
-        # # insert new_node:
-        # node.next = new_node
-        # # if new_node is not the tail:
-        # if next_node:
-        #     new_node.next = next_node
-        #     # handle duplicate keys
-        #     if new_node.key == next_node.key:
-        #         new_node.next = next_node.next
-        #         return
-        # # if new_node is tail
-        # else:
-        #     new_node.next = None
-        #
-        # self._size += 1
+        while node:
+            if key == node.key:
+                node.value = value
+                return False
+            node = node.next
+
+        bucket_ll.insert(key, value)
+        return True
+
 
     def empty_buckets(self) -> int:
         """
@@ -200,7 +151,10 @@ class HashMap:
         This method clears the contents of the hash map. It does not change the underlying hash
         table capacity.
         """
-        pass
+        for bucket in range(self._buckets.length()):
+            if self._buckets[bucket]._head:
+                self._buckets[bucket] = LinkedList()
+        self._size = 0
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -216,13 +170,20 @@ class HashMap:
         # print(new_capacity)
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
-        # print(new_capacity)
 
-        add_num_of_buckets = new_capacity - self._capacity
+        _new_buckets = DynamicArray()
+        for _ in range(new_capacity):
+            _new_buckets.append(LinkedList())
 
-        # print(type(self._buckets))
-        for buckets in range(add_num_of_buckets):
-            self._buckets.append(LinkedList())
+        # TODO: optimize
+        for bucket in range(self._buckets.length()):
+            node = self._buckets[bucket]._head
+            while node:
+                new_bucket = self._hash_function(node.key) % new_capacity
+                self._add_to_bucket(_new_buckets[new_bucket], node.key, node.value)
+                node = node.next
+
+        self._buckets = _new_buckets
 
         self._capacity = new_capacity
 
@@ -289,15 +250,24 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 # ------------------- BASIC TESTING ---------------------------------------- #
 
 if __name__ == "__main__":
-    #
-    # print("\nPDF - put example 1")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('str' + str(i), i * 100)
-    #     if i % 25 == 24:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    #
+
+    print("\nPDF - put example 1")
+    print("-------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('str' + str(i), i * 100)
+        if i % 25 == 24:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
+    # PDF - put example 1
+    # -------------------
+    # 39 0.47 25 53
+    # 39 0.94 50 53
+    # 87 0.7 75 107
+    # 84 0.93 100 107
+    # 189 0.56 125 223
+    # 186 0.67 150 223
+
     # print("\nPDF - put example 2")
     # print("-------------------")
     # m = HashMap(41, hash_function_2)
@@ -328,20 +298,20 @@ if __name__ == "__main__":
     # print(m)
     # m.put(0, 0)
     # print(m)
-
-    print("\nPDF - put example 4")
-    print("-------------------")
-    m = HashMap(53, hash_function_1)
-    m.put("Jen", "Wife")
-    print(m)
-    m.put("Gregg", "Dog")
-    print(m)
-    m.put("Gregl", "Same bucket")
-    print(m)
-    m.put("Jei", "Same bucket")
-    print(m)
-    m.put("Gregg", "Dumb")
-    print(m)
+    #
+    # print("\nPDF - put example 4")
+    # print("-------------------")
+    # m = HashMap(53, hash_function_1)
+    # m.put("Jen", "Wife")
+    # print(m)
+    # m.put("Gregg", "Dog")
+    # print(m)
+    # m.put("Gregl", "Same bucket")
+    # print(m)
+    # m.put("Jei", "Same bucket")
+    # print(m)
+    # m.put("Gregg", "Dumb")
+    # print(m)
     #
     # print("\nPDF - put example 5")
     # print("-------------------")
