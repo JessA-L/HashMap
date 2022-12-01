@@ -209,14 +209,11 @@ class HashMap:
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
 
-        remove_bool = self._buckets[bucket].remove(key)
-
-        if remove_bool:
+        if self._buckets[bucket].remove(key):
             self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
         This method returns a dynamic array where each index contains a tuple of a key/value pair
         stored in the hash map. The order of the keys in the dynamic array does not matter.
         """
@@ -251,7 +248,7 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 
     # use pop to put elements from da into map
     for el in range(da.length()):
-        map.put(da.pop())
+        map.put(da.pop(), da.pop())
 
     # Returns a tuple containing a dynamic array comprising the mode (most occurring) value/s of the array, and an
     #  integer that represents the highest frequency (how many times they appear).
@@ -511,21 +508,21 @@ if __name__ == "__main__":
     # m.resize_table(2)
     # print(m.get_keys_and_values())
 
-    # print("\nPDF - find_mode example 1")
-    # print("-----------------------------")
-    # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
-    # mode, frequency = find_mode(da)
-    # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-    #
-    # print("\nPDF - find_mode example 2")
-    # print("-----------------------------")
-    # test_cases = (
-    #     ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
-    #     ["one", "two", "three", "four", "five"],
-    #     ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
-    # )
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     mode, frequency = find_mode(da)
-    #     print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+    print("\nPDF - find_mode example 1")
+    print("-----------------------------")
+    da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
+    mode, frequency = find_mode(da)
+    print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
+
+    print("\nPDF - find_mode example 2")
+    print("-----------------------------")
+    test_cases = (
+        ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
+        ["one", "two", "three", "four", "five"],
+        ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
+    )
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        mode, frequency = find_mode(da)
+        print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
