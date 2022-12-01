@@ -133,7 +133,6 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
         This method clears the contents of the hash map. It does not change the underlying hash
         table capacity.
         """
@@ -229,29 +228,45 @@ class HashMap:
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
     """
-    TODO: Write this implementation
-    Receives a dynamic array (that is not guaranteed to be sorted). Returns a tuple containing, in this
-    order, a dynamic array comprising the mode (most occurring) value/s of the array, and an
-    integer that represents the highest frequency (how many times they appear).
+    Receives a dynamic array. Returns a tuple containing a dynamic array comprising:
+    the mode value/s of the array
+    and an integer that represents the highest frequency (how many times they appear).
+
     If there is more than one value with the highest frequency, all values at that frequency
-    should be included in the array being returned (the order does not matter). If there is only
-    one mode, the dynamic array will only contain that value.
+    should be included in the array being returned.
+
     You may assume that the input array will contain at least one element, and that all values
-    stored in the array will be strings. You do not need to write checks for these conditions.
-    Function will be implemented with O(N) time complexity. For best
-    results, we recommend using the separate chaining hash map provided for you in the
-    function’s skeleton code.
+    stored in the array will be strings.
+
+    Function will be implemented with O(N) time complexity.
     """
-    # if you'd like to use a hash map,
-    # use this instance of your Separate Chaining HashMap
+
+    # put elements from da into map with corresponding frequency
     map = HashMap()
-
-    # use pop to put elements from da into map
     for el in range(da.length()):
-        map.put(da.pop(), da.pop())
+        # key = the element
+        key = da.get_at_index(el)
+        # value = num of times key is in map
+        value = map.get(key)
+        if not value:
+            value = 0
+        # create key-value entry or overwrite value with value + 1
+        map.put(key, value + 1)
 
-    # Returns a tuple containing a dynamic array comprising the mode (most occurring) value/s of the array, and an
-    #  integer that represents the highest frequency (how many times they appear).
+    map_da = map.get_keys_and_values()
+    mode_da = DynamicArray()
+    greatest_freq = 0
+    for el in range(map_da.length()):
+        str, freq = map_da[el]
+        # if same # of occurances, add to mode_da
+        if freq == greatest_freq:
+            mode_da.append(str)
+        # if more frequent than current mode, create new array with that str
+        if freq > greatest_freq:
+            mode_da = DynamicArray([str])
+            greatest_freq = freq
+
+    return mode_da, greatest_freq
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
@@ -526,3 +541,11 @@ if __name__ == "__main__":
         da = DynamicArray(case)
         mode, frequency = find_mode(da)
         print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+
+    # print("\nPDF - find_mode example 3")
+    # print("-----------------------------")
+    # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
+    # find_mode(da)
+    # # mode, frequency = find_mode(da)
+    # # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
+
