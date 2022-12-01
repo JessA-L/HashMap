@@ -91,16 +91,17 @@ class HashMap:
         the hash map, its associated value must be replaced with the new value. If the given key is
         not in the hash map, a new key/value pair must be added.
         """
-        # The table must be resized to double its current capacity when the current load factor of the table is
-        #  greater than or equal to 0.5.
-        # table_load = self.table_load()
-        # if table_load >= 0.5:
-        #     self.resize_table(self._capacity * 2)
+        # The table must be resized to double its current capacity when the
+        #   current load factor of the table is greater than or equal to 0.5.
+        table_load = self.table_load()
+        if table_load >= 0.5:
+            self.resize_table(self._capacity * 2)
 
         bucket = self._probe(key)
-        # print(self._buckets[bucket])
+
         self._buckets[bucket] = value
-        # print(self._buckets[bucket])
+
+        self._size += 1
 
     def _probe(self, key):
         """
@@ -118,15 +119,19 @@ class HashMap:
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        This method returns the current hash table load factor.
         """
-        pass
+        return self._size / self._capacity
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        This method returns the number of empty buckets in the hash table.
         """
-        pass
+        empty_buckets = 0
+        for el in range(self._capacity):
+            if not self._buckets[el]:
+                empty_buckets += 1
+        return empty_buckets
 
     def resize_table(self, new_capacity: int) -> None:
         """
@@ -181,20 +186,21 @@ class HashMap:
 
 if __name__ == "__main__":
 
-    print("\nPDF - probe example 1")
-    print("-------------------")
+    # print("\nPDF - probe example 1")
+    # print("-------------------")
+    #
+    # m = HashMap(53, lambda a : a % 10)
+    # m._buckets[1] = 1
+    # m._buckets[2] = 2
+    # m.put(11, 11)
+    # print(m._probe(11))
 
-    m = HashMap(53, lambda a : a % 10)
-    m._buckets[1] = 1
-    m._buckets[2] = 2
-    m.put(11, 11)
-    print(m._probe(11))
-
-    print("\nPDF - put example 1")
-    print("-------------------")
-    m = HashMap(53, hash_function_1)
-    for i in range(150):
-        m.put('str' + str(i), i * 100)
+    # print("\nPDF - put example 1")
+    # print("-------------------")
+    # m = HashMap(53, hash_function_1)
+    # for i in range(150):
+    #     m.put('str' + str(i), i * 100)
+    # print(m)
     #     if i % 25 == 24:
     #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
     #
@@ -206,46 +212,53 @@ if __name__ == "__main__":
         # if i % 10 == 9:
         #     print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
-    # print("\nPDF - table_load example 1")
-    # print("--------------------------")
-    # m = HashMap(101, hash_function_1)
-    # print(round(m.table_load(), 2))
-    # m.put('key1', 10)
-    # print(round(m.table_load(), 2))
-    # m.put('key2', 20)
-    # print(round(m.table_load(), 2))
-    # m.put('key1', 30)
-    # print(round(m.table_load(), 2))
-    #
-    # print("\nPDF - table_load example 2")
-    # print("--------------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(50):
-    #     m.put('key' + str(i), i * 100)
-    #     if i % 10 == 0:
-    #         print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    #
-    # print("\nPDF - empty_buckets example 1")
-    # print("-----------------------------")
-    # m = HashMap(101, hash_function_1)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key1', 10)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key2', 20)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key1', 30)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key4', 40)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    #
-    # print("\nPDF - empty_buckets example 2")
-    # print("-----------------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('key' + str(i), i * 100)
-    #     if i % 30 == 0:
-    #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    #
+    print("\nPDF - put example 3")
+    print("-------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(53):
+        m.put('str' + str(i), i * 100)
+    print(m)
+
+    print("\nPDF - table_load example 1")
+    print("--------------------------")
+    m = HashMap(101, hash_function_1)
+    print(round(m.table_load(), 2))
+    m.put('key1', 10)
+    print(round(m.table_load(), 2))
+    m.put('key2', 20)
+    print(round(m.table_load(), 2))
+    m.put('key1', 30)
+    print(round(m.table_load(), 2))
+
+    print("\nPDF - table_load example 2")
+    print("--------------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(50):
+        m.put('key' + str(i), i * 100)
+        if i % 10 == 0:
+            print(round(m.table_load(), 2), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 1")
+    print("-----------------------------")
+    m = HashMap(101, hash_function_1)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 10)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key2', 20)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 30)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key4', 40)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 2")
+    print("-----------------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('key' + str(i), i * 100)
+        if i % 30 == 0:
+            print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
     # print("\nPDF - resize example 1")
     # print("----------------------")
     # m = HashMap(23, hash_function_1)
