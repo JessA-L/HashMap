@@ -119,7 +119,7 @@ class HashMap:
         This method returns the number of empty buckets in the hash table.
         """
         empty_buckets_count = 0
-        for bucket in range(0, self._buckets.length()):
+        for bucket in range(self._buckets.length()):
             if not self._buckets[bucket]._head:
                 empty_buckets_count += 1
 
