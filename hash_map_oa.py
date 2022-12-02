@@ -115,20 +115,6 @@ class HashMap:
 
         self._size += 1
 
-    def _probe(self, bucket_da, capacity, key):
-        """
-        Searches for an open element in hash table.
-        Used by put() and resize().
-        """
-        bucket = self._hash_function(key) % capacity
-        open_bucket = bucket
-        j = 1
-        while bucket_da[open_bucket]:
-            open_bucket = (bucket + j ** 2) % capacity
-            j += 1
-
-        return open_bucket
-
     def table_load(self) -> float:
         """
         This method returns the current hash table load factor.
