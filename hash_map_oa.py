@@ -228,9 +228,9 @@ class HashMap:
         This method returns a dynamic array where each index contains a tuple of a key/value pair
         stored in the hash map. The order of the keys in the dynamic array does not matter.
         """
-        key_val_da = DynamicArray(self._size)
+        key_val_da = DynamicArray()
         for el in self:
-            key_val_da.append(el.key, el.value)
+            key_val_da.append((el.key, el.value))
 
         return key_val_da
 
@@ -462,21 +462,21 @@ if __name__ == "__main__":
     # m.clear()
     # print(m.get_size(), m.get_capacity())
 
-    # print("\nPDF - get_keys_and_values example 1")
-    # print("------------------------")
-    # m = HashMap(11, hash_function_2)
-    # for i in range(1, 6):
-    #     m.put(str(i), str(i * 10))
-    # print(m.get_keys_and_values())
-    #
-    # m.resize_table(2)
-    # print(m.get_keys_and_values())
-    #
-    # m.put('20', '200')
-    # m.remove('1')
-    # m.resize_table(12)
-    # print(m.get_keys_and_values())
-    #
+    print("\nPDF - get_keys_and_values example 1")
+    print("------------------------")
+    m = HashMap(11, hash_function_2)
+    for i in range(1, 6):
+        m.put(str(i), str(i * 10))
+    print(m.get_keys_and_values())
+
+    m.resize_table(2)
+    print(m.get_keys_and_values())
+
+    m.put('20', '200')
+    m.remove('1')
+    m.resize_table(12)
+    print(m.get_keys_and_values())
+
     print("\nPDF - __iter__(), __next__() example 1")
     print("---------------------")
     m = HashMap(10, hash_function_1)
