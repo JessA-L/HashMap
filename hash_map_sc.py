@@ -213,19 +213,16 @@ class HashMap:
     def get_keys_and_values(self) -> DynamicArray:
         """
         This method returns a dynamic array where each index contains a tuple of a key/value pair
-        stored in the hash map. The order of the keys in the dynamic array does not matter.
+        stored in the hash map.
         """
         da = DynamicArray()
 
         for bucket in range(self._buckets.length()):
-            # node = self._buckets[bucket]._head
-            # while node:
-            #     da.append((node.key, node.value))
-            #     node = node.next
             for node in self._buckets[bucket]:
                 da.append((node.key, node.value))
 
         return da
+
 
 def find_mode(da: DynamicArray) -> (DynamicArray, int):
     """
@@ -236,7 +233,7 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
     If there is more than one value with the highest frequency, all values at that frequency
     should be included in the array being returned.
 
-    You may assume that the input array will contain at least one element, and that all values
+    Assumed that the input array will contain at least one element, and that all values
     stored in the array will be strings.
 
     Function will be implemented with O(N) time complexity.
@@ -322,28 +319,6 @@ if __name__ == "__main__":
     # m.put(0, 0)
     # print(m)
     #
-    # print("\nPDF - put example 4")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # m.put("Jen", "Wife")
-    # print(m)
-    # m.put("Gregg", "Dog")
-    # print(m)
-    # m.put("Gregl", "Same bucket")
-    # print(m)
-    # m.put("Jei", "Same bucket")
-    # print(m)
-    # m.put("Gregg", "Dumb")
-    # print(m)
-    #
-    # print("\nPDF - put example 5")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('str' + str(i), i * 100)
-    #     # if i % 25 == 24:
-    #     #     print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
-    # print(m)
 
     print("\nPDF - empty_buckets example 1")
     print("-----------------------------")
@@ -549,4 +524,3 @@ if __name__ == "__main__":
     # find_mode(da)
     # # mode, frequency = find_mode(da)
     # # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-
