@@ -172,14 +172,18 @@ class HashMap:
     def get(self, key: str) -> object:
         """
         This method returns the value associated with the given key. If the key is not in the hash
-        map, the method returns None.
+        map, the method returns None. Uses probing to optimize search.
+        Used by contains_key().
         """
         bucket = self._hash_function(key) % self._capacity
         next_bucket = bucket
         j = 1
+        # search keys; ignore tombstones
         while self._buckets[next_bucket] and not self._buckets[next_bucket].is_tombstone:
             if self._buckets[next_bucket].key == key:
                 return self._buckets[next_bucket].value
+
+            # use probing to search for key
             next_bucket = (bucket + j ** 2) % self._capacity
             j += 1
 
@@ -204,6 +208,7 @@ class HashMap:
         next_bucket = bucket
         j = 1
         while self._buckets[next_bucket]:
+
             if self._buckets[next_bucket].key == key and not self._buckets[next_bucket].is_tombstone:
                 self._buckets[next_bucket].is_tombstone = True
                 self._size -= 1
@@ -390,21 +395,21 @@ if __name__ == "__main__":
     # # for i in range(200, 300, 21):
     # #     print(i, m.get(str(i)), m.get(str(i)) == i * 10)
     # #     print(i + 1, m.get(str(i + 1)), m.get(str(i + 1)) == (i + 1) * 10)
-    # #
-    # # print("\nPDF - contains_key example 1")
-    # # print("----------------------------")
-    # # m = HashMap(11, hash_function_1)
-    # # print(m.contains_key('key1'))
-    # # m.put('key1', 10)
-    # # m.put('key2', 20)
-    # # m.put('key3', 30)
-    # # print(m.contains_key('key1'))
-    # # print(m.contains_key('key4'))
-    # # print(m.contains_key('key2'))
-    # # print(m.contains_key('key3'))
-    # # m.remove('key3')
-    # # print(m.contains_key('key3'))
-    # #
+
+    print("\nPDF - contains_key example 1")
+    print("----------------------------")
+    m = HashMap(11, hash_function_1)
+    print(m.contains_key('key1'))
+    m.put('key1', 10)
+    m.put('key2', 20)
+    m.put('key3', 30)
+    print(m.contains_key('key1'))
+    print(m.contains_key('key4'))
+    print(m.contains_key('key2'))
+    print(m.contains_key('key3'))
+    m.remove('key3')
+    print(m.contains_key('key3'))
+
     # # print("\nPDF - contains_key example 2")
     # # print("----------------------------")
     # # m = HashMap(79, hash_function_2)
