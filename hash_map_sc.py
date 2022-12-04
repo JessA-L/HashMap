@@ -133,7 +133,7 @@ class HashMap:
         table capacity.
         """
         for bucket in range(self._buckets.length()):
-            if self._buckets[bucket]._head:
+            if self._buckets[bucket]:
                 self._buckets[bucket] = LinkedList()
         self._size = 0
 
@@ -339,26 +339,26 @@ if __name__ == "__main__":
     #     #     print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
     # print(m)
 
-    # print("\nPDF - empty_buckets example 1")
-    # print("-----------------------------")
-    # m = HashMap(101, hash_function_1)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key1', 10)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key2', 20)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key1', 30)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    # m.put('key4', 40)
-    # print(m.empty_buckets(), m.get_size(), m.get_capacity())
-    #
-    # print("\nPDF - empty_buckets example 2")
-    # print("-----------------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('key' + str(i), i * 100)
-    #     if i % 30 == 0:
-    #         print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    print("\nPDF - empty_buckets example 1")
+    print("-----------------------------")
+    m = HashMap(101, hash_function_1)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 10)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key2', 20)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key1', 30)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+    m.put('key4', 40)
+    print(m.empty_buckets(), m.get_size(), m.get_capacity())
+
+    print("\nPDF - empty_buckets example 2")
+    print("-----------------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('key' + str(i), i * 100)
+        if i % 30 == 0:
+            print(m.empty_buckets(), m.get_size(), m.get_capacity())
 
     # print("\nPDF - empty_buckets example 3")
     # print("-----------------------------")
@@ -518,24 +518,24 @@ if __name__ == "__main__":
     # m.resize_table(2)
     # print(m.get_keys_and_values())
 
-    print("\nPDF - find_mode example 1")
-    print("-----------------------------")
-    da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
-    mode, frequency = find_mode(da)
-    print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-
-    print("\nPDF - find_mode example 2")
-    print("-----------------------------")
-    test_cases = (
-        ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
-        ["one", "two", "three", "four", "five"],
-        ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
-    )
-
-    for case in test_cases:
-        da = DynamicArray(case)
-        mode, frequency = find_mode(da)
-        print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+    # print("\nPDF - find_mode example 1")
+    # print("-----------------------------")
+    # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
+    # mode, frequency = find_mode(da)
+    # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
+    #
+    # print("\nPDF - find_mode example 2")
+    # print("-----------------------------")
+    # test_cases = (
+    #     ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
+    #     ["one", "two", "three", "four", "five"],
+    #     ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
+    # )
+    #
+    # for case in test_cases:
+    #     da = DynamicArray(case)
+    #     mode, frequency = find_mode(da)
+    #     print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
 
     # print("\nPDF - find_mode example 3")
     # print("-----------------------------")
