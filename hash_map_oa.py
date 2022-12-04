@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 6 - HashMap
 # Due Date: 12/2/22
-# Description: An implementation of a HashMap using Open Addressing.
+# Description: An implementation of a HashMap using Open Addressing with Quadratic Probing.
 
 from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)
