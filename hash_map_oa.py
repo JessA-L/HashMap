@@ -107,7 +107,7 @@ class HashMap:
             # if bucket is a tombstone, break to add to bucket and increase size
             if self._buckets[open_bucket].is_tombstone:
                 break
-            # If key already exists, replace with the new value.
+            # If key already exists, replace value with the new value.
             if self._buckets[open_bucket].key == key:
                 self._buckets[open_bucket] = HashEntry(key, value)
                 return
@@ -116,7 +116,7 @@ class HashMap:
             open_bucket = (bucket + j ** 2) % self._capacity
             j += 1
 
-        # add key-value pair to hm
+        # If the given key is not in the hash map, add new key/value pair
         self._buckets[open_bucket] = HashEntry(key, value)
         self._size += 1
 
