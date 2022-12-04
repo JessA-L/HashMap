@@ -116,7 +116,7 @@ class HashMap:
         """
         empty_buckets_count = 0
         for bucket in range(self._buckets.length()):
-            if not self._buckets[bucket]._head:
+            if self._buckets[bucket].length() == 0:
                 empty_buckets_count += 1
 
         return empty_buckets_count
