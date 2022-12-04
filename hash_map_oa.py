@@ -87,8 +87,9 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        This method updates the key/value pair in the hash map. If the given key already exists in
-        the hash map, its associated value must be replaced with the new value. If the given key is
+        This method updates the key/value pair in the hash map using quadratic probing.
+        If the given key already exists in the hash map,
+        its associated value must be replaced with the new value. If the given key is
         not in the hash map, a new key/value pair must be added.
         """
         # The table must be resized to double its current capacity when the
@@ -102,22 +103,26 @@ class HashMap:
         open_bucket = bucket
         j = 1
         while self._buckets[open_bucket]:
+            # if bucket is a tombstone, break to add to bucket and increase size
             if self._buckets[open_bucket].is_tombstone:
                 break
+            # If key already exists, replace with the new value.
             if self._buckets[open_bucket].key == key:
                 self._buckets[open_bucket] = HashEntry(key, value)
                 return
 
+            # probe to find open bucket
             open_bucket = (bucket + j ** 2) % self._capacity
             j += 1
 
+        # add key-value pair to hm
         self._buckets[open_bucket] = HashEntry(key, value)
-
         self._size += 1
 
     def table_load(self) -> float:
         """
         This method returns the current hash table load factor.
+        Used by put()
         """
         return self._size / self._capacity
 
@@ -153,8 +158,8 @@ class HashMap:
         for bucket in range(new_capacity):
             _new_da.append(None)
         self._buckets = _new_da
-
         self._size = 0
+
         self._capacity = new_capacity
 
         # put valid entries into hashmap
