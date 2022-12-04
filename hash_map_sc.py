@@ -90,11 +90,9 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        This method updates the key/value pair in the hash map. If the given key already exists in
-        the hash map, its associated value must be replaced with the new value. If the given key is
-        not in the hash map, a new key/value pair must be added.
+        This method updates the key/value pair in the hash map.
         """
-
+        # Double capacity if table_load is too large
         table_load = self.table_load()
         if table_load >= 1:
             self.resize_table(self._capacity * 2)
@@ -102,20 +100,18 @@ class HashMap:
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
 
-        node = self._buckets[bucket]._head
-
-        while node:
+        # If the given key already exists in the hash map, replace value with the new value
+        for node in self._buckets[bucket]:
             if key == node.key:
                 node.value = value
                 return
-            node = node.next
 
+        # If the given key is not in the hash map, add new key/value pair
         self._buckets[bucket].insert(key, value)
         self._size += 1
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
         This method returns the number of empty buckets in the hash table.
         """
         empty_buckets_count = 0
@@ -143,7 +139,6 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
         This method changes the capacity of the internal hash table. All existing key/value pairs
         must remain in the new hash map, and all hash table links must be rehashed.
         """
@@ -273,13 +268,13 @@ def find_mode(da: DynamicArray) -> (DynamicArray, int):
 
 if __name__ == "__main__":
 
-    # print("\nPDF - put example 1")
-    # print("-------------------")
-    # m = HashMap(53, hash_function_1)
-    # for i in range(150):
-    #     m.put('str' + str(i), i * 100)
-    #     if i % 25 == 24:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+    print("\nPDF - put example 1")
+    print("-------------------")
+    m = HashMap(53, hash_function_1)
+    for i in range(150):
+        m.put('str' + str(i), i * 100)
+        if i % 25 == 24:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
     # PDF - put example 1
     # -------------------
@@ -290,13 +285,13 @@ if __name__ == "__main__":
     # 189 0.56 125 223
     # 186 0.67 150 223
 
-    # print("\nPDF - put example 2")
-    # print("-------------------")
-    # m = HashMap(41, hash_function_2)
-    # for i in range(50):
-    #     m.put('str' + str(i // 3), i * 100)
-    #     if i % 10 == 9:
-    #         print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
+    print("\nPDF - put example 2")
+    print("-------------------")
+    m = HashMap(41, hash_function_2)
+    for i in range(50):
+        m.put('str' + str(i // 3), i * 100)
+        if i % 10 == 9:
+            print(m.empty_buckets(), round(m.table_load(), 2), m.get_size(), m.get_capacity())
 
     # print("\nPDF - put example 3")
     # print("-------------------")
