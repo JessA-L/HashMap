@@ -124,6 +124,7 @@ class HashMap:
     def table_load(self) -> float:
         """
         This method returns the current hash table load factor.
+        Used by put().
         """
         return self._size / self._capacity
 
@@ -145,6 +146,7 @@ class HashMap:
         # First check that new_capacity is not less than 1; if so, the method does nothing.
         if new_capacity < 1:
             return
+
         # Make sure new_capacity is a prime number. If not, change it to the next
         # highest prime number.
         if not self._is_prime(new_capacity):
@@ -155,15 +157,18 @@ class HashMap:
             new_capacity = new_capacity * 2
             new_capacity = self._next_prime(new_capacity)
 
+        # create da of new_capacity capacity
         _new_buckets = DynamicArray()
         for _ in range(new_capacity):
             _new_buckets.append(LinkedList())
 
+        # add nodes from original hash map to new da
         for bucket in range(self._buckets.length()):
             for node in self._buckets[bucket]:
                 new_bucket = self._hash_function(node.key) % new_capacity
                 _new_buckets[new_bucket].insert(node.key, node.value)
 
+        # reassign underlying da
         self._buckets = _new_buckets
         self._capacity = new_capacity
 
@@ -176,7 +181,6 @@ class HashMap:
         bucket = self._hash_function(key) % self._capacity
 
         node = self._buckets[bucket].contains(key)
-
         if node:
             return node.value
 
