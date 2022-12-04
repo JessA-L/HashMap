@@ -207,7 +207,7 @@ class HashMap:
         # Use hash function to determine "bucket"
         bucket = self._hash_function(key) % self._capacity
 
-        if self._buckets[bucket].remove(key):
+        if self._buckets[bucket].remove(key):  # ll remove function from a6_include
             self._size -= 1
 
     def get_keys_and_values(self) -> DynamicArray:
@@ -218,10 +218,12 @@ class HashMap:
         da = DynamicArray()
 
         for bucket in range(self._buckets.length()):
-            node = self._buckets[bucket]._head
-            while node:
+            # node = self._buckets[bucket]._head
+            # while node:
+            #     da.append((node.key, node.value))
+            #     node = node.next
+            for node in self._buckets[bucket]:
                 da.append((node.key, node.value))
-                node = node.next
 
         return da
 
