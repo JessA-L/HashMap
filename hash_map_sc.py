@@ -101,11 +101,7 @@ class HashMap:
         bucket = self._hash_function(key) % self._capacity
 
         # If the given key already exists in the hash map, replace value with the new value
-        # for node in self._buckets[bucket]:
-        #     if key == node.key:
-        #         node.value = value
-        #         return
-        node = self._buckets.contains(key)
+        node = self._buckets[bucket].contains(key)
         if node:
             node.value = value
             return
