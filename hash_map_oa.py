@@ -91,6 +91,7 @@ class HashMap:
         If the given key already exists in the hash map,
         its associated value must be replaced with the new value. If the given key is
         not in the hash map, a new key/value pair must be added.
+        Used by resize_table().
         """
         # The table must be resized to double its current capacity when the
         #   current load factor of the table is greater than or equal to 0.5.
@@ -140,9 +141,10 @@ class HashMap:
         """
         This method changes the capacity of the internal hash table. All existing key/value pairs
         must remain in the new hash map, and all hash table links must be rehashed.
+        Used by put().
         """
-        # First check that new_capacity is not less than the current number of elements in the hash
-        # map; if so, the method does nothing.
+        # Check that new_capacity is not less than the current number of elements in the hash
+        #   map; if so, the method does nothing.
         if new_capacity < self._size:
             return
 
@@ -150,19 +152,19 @@ class HashMap:
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
-        # save old bucket
+        # save bucket of current key/value pairs
         _old_buckets = self._buckets
 
-        # empty self._buckets
+        # empty self._buckets by replacing with _new_da
         _new_da = DynamicArray()
         for bucket in range(new_capacity):
             _new_da.append(None)
         self._buckets = _new_da
-        self._size = 0
 
+        self._size = 0
         self._capacity = new_capacity
 
-        # put valid entries into hashmap
+        # put valid entries from _old_buckets into resized hashmap
         for bucket in range(_old_buckets.length()):
             if _old_buckets[bucket] and not _old_buckets[bucket].is_tombstone:
                 self.put(_old_buckets[bucket].key, _old_buckets[bucket].value)
